@@ -15,6 +15,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import org.json.simple.*;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 /**
  *
  * @author dale
@@ -35,7 +37,7 @@ public class NYTNewsManager {
     //http://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=810a7f74e1e244d2a67a7c5ab7d5e7ca&query=Mike
     
     private final String apiKey = "810a7f74e1e244d2a67a7c5ab7d5e7ca";
-    private String searchString = "University of Missouri";
+    private String searchString = "Mike";
     
     private URL url;
     private ArrayList<NYTNewsStory> newsStories;
@@ -62,7 +64,7 @@ public class NYTNewsManager {
         }
         
         urlString = baseUrlString + "?query=" + encodedSearchString + "&api-key=" + apiKey;
-        
+        System.out.println("URL SEARCH: " + urlString);
         try {
             url = new URL(urlString);
         } catch(MalformedURLException muex) {
@@ -116,16 +118,16 @@ public class NYTNewsManager {
             throw new Exception("Status returned from API was not OK.");
         }
         
-        JSONObject response;
-        try {
-            response = (JSONObject)jsonObj.get("response");
-        } catch (Exception ex) {
-            throw ex;
-        }
+//        JSONObject response;
+//        try {
+//            response = (JSONObject)jsonObj.get("response");
+//        } catch (Exception ex) {
+//            throw ex;
+//        }
         
         JSONArray docs;
         try {
-            docs = (JSONArray)response.get("results");
+            docs = (JSONArray)jsonObj.get("results");
         } catch (Exception ex) {
             throw ex;
         }
@@ -133,28 +135,43 @@ public class NYTNewsManager {
         for (Object doc : docs) {
             try {
                 JSONObject story = (JSONObject)doc;
-                String webUrl = (String)story.getOrDefault("display_title", "");
-                String snippet = (String)story.getOrDefault("headline", "");
-                String leadParagraph = (String)story.getOrDefault("lead_paragraph", "");
-                String source = (String)story.getOrDefault("source", "");
-                String newsDesk = (String)story.getOrDefault("news_desk", "");
-                String sectionName = (String)story.getOrDefault("section_name", "");
-                JSONObject headlineObj = (JSONObject)story.getOrDefault("headline", null);
-                String headline = "";
-                if (headlineObj != null) {
-                    headline = (String)headlineObj.getOrDefault("main", "");
+                
+                StringEscapeUtils.unescapeHtml4("hello");
+                String headline = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("headline", ""));
+                String displayTitle = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("display_title", ""));
+                String mpaaRating = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("mpaa_rating", ""));
+                String byline = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("byline", ""));
+                String openingDate = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("opening_date", ""));
+                String publicationDate = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("publication_date", ""));
+                String dateUpdated = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("date_updated", ""));
+                String summaryShort = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("summary_short", ""));
+                
+                
+            
+                JSONObject webUrlObj = (JSONObject)story.getOrDefault("link", null);
+                String webUrl = "";
+                if (webUrlObj != null) {
+                    webUrl = StringEscapeUtils.unescapeHtml4((String)webUrlObj.getOrDefault("url", ""));
                 }
                 
-                System.out.println("headline: " + headline + "\n");
-                System.out.println("webUrl: " + webUrl + "\n");
-                System.out.println("snippet: " + snippet + "\n");
-                System.out.println("leadParagraph: " + leadParagraph + "\n");
-                System.out.println("newsDesk: " + newsDesk + "\n");
-                System.out.println("sectionName: " + sectionName + "\n");
-                System.out.println("source: " + source + "\n");
+                JSONObject mediaObj = (JSONObject)story.getOrDefault("multimedia", null);
+                String imageUrl = "notAvailable.jpg";
+                if (mediaObj != null) {
+                    imageUrl = StringEscapeUtils.unescapeHtml4((String)mediaObj.getOrDefault("src", ""));
+                }
+                
+                System.out.println("Title: " + displayTitle + "\n");
+                System.out.println("MPAA Rating: " + mpaaRating + "\n");
+                System.out.println("Byline: " + byline + "\n");
+                System.out.println("Headline: " + headline + "\n");
+                System.out.println("Opening Date: " + openingDate + "\n");
+                System.out.println("Publication Date: " + publicationDate + "\n");
+                System.out.println("Date Updated: " + dateUpdated + "\n");
+                System.out.println("WebUrl: " + webUrl + "\n");
+                System.out.println("Summary: " + summaryShort + "\n");
                 System.out.println("------------------------------------------------------\n");
                 
-                NYTNewsStory newsStory = new NYTNewsStory(webUrl, headline, snippet, leadParagraph, newsDesk, sectionName, source );
+                NYTNewsStory newsStory = new NYTNewsStory(displayTitle, mpaaRating, byline, headline, openingDate, publicationDate, dateUpdated, webUrl, summaryShort, imageUrl);
                 newsStories.add(newsStory);
                 
             } catch (Exception ex) {

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
@@ -35,6 +37,60 @@
          </VBox.margin>
       </HBox>
       <ListView fx:id="newsListView" prefHeight="200.0" prefWidth="200.0" />
-      <WebView fx:id="webView" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS" />
+      <FlowPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="movieImage" fitHeight="160.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <FlowPane.margin>
+                  <Insets left="20.0" />
+               </FlowPane.margin></ImageView>
+            <VBox prefHeight="200.0" prefWidth="400.0">
+               <children>
+                  <Label fx:id="movieTitle" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <Label fx:id="movieMpaaRating" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <Label fx:id="movieByline" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <Label fx:id="movieHeadline" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <Label fx:id="movieOpeningDate" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <Label fx:id="moviePublicationDate" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <Label fx:id="movieDateUpdated" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Label>
+                  <Button fx:id="movieFullReview" mnemonicParsing="false" text="Read Full Review">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Button>
+               </children>
+               <FlowPane.margin>
+                  <Insets left="20.0" />
+               </FlowPane.margin>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </FlowPane>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <TextArea fx:id="movieDescription" prefHeight="100.0" prefWidth="800.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
    </children>
 </VBox>

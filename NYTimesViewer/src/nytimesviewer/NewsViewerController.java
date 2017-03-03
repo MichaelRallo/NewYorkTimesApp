@@ -5,24 +5,35 @@
  */
 package nytimesviewer;
 
+import java.awt.Desktop;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -45,13 +56,30 @@ public class NewsViewerController implements Initializable {
     
     @FXML
     private ListView newsListView;
+   
     
-    @FXML
-    private WebView webView;
-    
-    private String searchString = "University of Missouri";
-    private WebEngine webEngine;
+    private String searchString = "Mike";
     ObservableList<String> newsListItems;
+    @FXML
+    private Label movieTitle;
+    @FXML
+    private Label movieMpaaRating;
+    @FXML
+    private Label movieByline;
+    @FXML
+    private Label movieHeadline;
+    @FXML
+    private Label movieOpeningDate;
+    @FXML
+    private Label moviePublicationDate;
+    @FXML
+    private Label movieDateUpdated;
+    @FXML
+    private Button movieFullReview;
+    @FXML
+    private TextArea movieDescription;
+    @FXML
+    private ImageView movieImage;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -60,10 +88,10 @@ public class NewsViewerController implements Initializable {
     
     public void ready(Stage stage) {
         this.stage = stage;
-        webEngine = webView.getEngine();
         newsManager = new NYTNewsManager();
         
         newsListItems = FXCollections.observableArrayList();
+        //Everytime a story is selected, run this protocol.
         newsListView.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
             // When the contents of the newsListView changes a situation can be created
             // where autoselection results in a new_val that is out of range of the stories.
@@ -72,7 +100,28 @@ public class NewsViewerController implements Initializable {
                 return;
             }
             NYTNewsStory story = stories.get((int)new_val);
-            webEngine.load(story.webUrl);
+            if(!story.imageUrl.equals("")){
+                movieImage.setImage(new Image(story.imageUrl));
+            }
+                
+            movieTitle.setText("Title: " + story.displayTitle);
+            movieMpaaRating.setText("MPAA Rating: " + story.mpaaRating);
+            movieByline.setText("Byline: " + story.byline);
+            movieHeadline.setText("Headline: " + story.headline);
+            movieOpeningDate.setText("Opening Date: " + story.openingDate);
+            moviePublicationDate.setText("Publication Date: " + story.publicationDate);
+            movieDateUpdated.setText("Date Updated: " + story.dateUpdated);
+            movieFullReview.setOnAction((ActionEvent event) -> {
+                if(Desktop.isDesktopSupported()){
+                    try {
+                        Desktop.getDesktop().browse(new URI(story.webUrl));
+                    } catch (IOException | URISyntaxException ex) {
+                        Logger.getLogger(NewsViewerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            });
+            movieDescription.setText(story.summaryShort);
         });
         
         // put initial search string in searchTextField and load news based
@@ -184,7 +233,7 @@ public class NewsViewerController implements Initializable {
         alert.setContentText("This application was developed by Dale Musser for CS4330 at the University of Missouri.");
         
         TextArea textArea = new TextArea("The New York Times API is used to obtain a news feed.  Developer information is available at http://developer.nytimes.com. ");
-        textArea.appendText("Dale's api-key is used in this application.  If you develop your own applicatyion get your own api-key from the New York Times.");
+        textArea.appendText("Mike's api-key is used in this application.  If you develop your own applicatyion get your own api-key from the New York Times.");
         textArea.setEditable(false);
         textArea.setWrapText(true);
         textArea.setMaxWidth(Double.MAX_VALUE);
