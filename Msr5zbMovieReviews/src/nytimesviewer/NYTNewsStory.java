@@ -7,7 +7,7 @@ package nytimesviewer;
 
 /**
  *
- * @author mike
+ * @author dale/mike msr5zb 12358133
  */
 public class NYTNewsStory {
     public String displayTitle;

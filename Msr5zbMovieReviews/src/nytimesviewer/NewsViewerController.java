@@ -20,7 +20,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -33,15 +32,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.text.Text;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
- * @author dale
+ * @author dale/mike msr5zb 12358133
  * http://stackoverflow.com/questions/26227786/loading-urls-in-javafx-webview-is-crashing-the-jvm
  */
 public class NewsViewerController implements Initializable {
@@ -58,7 +54,7 @@ public class NewsViewerController implements Initializable {
     private ListView newsListView;
    
     
-    private String searchString = "Mike";
+    private String searchString = "Space";
     ObservableList<String> newsListItems;
     @FXML
     private Label movieTitle;
@@ -127,6 +123,7 @@ public class NewsViewerController implements Initializable {
         // put initial search string in searchTextField and load news based
         // on that search
         searchTextField.setText(searchString);
+        movieDescription.setWrapText(true);
         loadNews();
     }
     
@@ -230,7 +227,7 @@ public class NewsViewerController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("New York Times Viewer");
-        alert.setContentText("This application was developed by Dale Musser for CS4330 at the University of Missouri.");
+        alert.setContentText("This application was developed by Dale Musser, extended by Mike Rallo, for CS4330 at the University of Missouri.");
         
         TextArea textArea = new TextArea("The New York Times API is used to obtain a news feed.  Developer information is available at http://developer.nytimes.com. ");
         textArea.appendText("Mike's api-key is used in this application.  If you develop your own applicatyion get your own api-key from the New York Times.");

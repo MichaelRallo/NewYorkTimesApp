@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author dale
+ * @author dale/mike msr5zb 12358133
  */
 public class NYTimesViewer extends Application {
     
@@ -24,7 +24,7 @@ public class NYTimesViewer extends Application {
         NewsViewerController controller = (NewsViewerController)loader.getController();
         
         Scene scene = new Scene(root);
-        
+        stage.setTitle("Moview Review Viewer");
         stage.setScene(scene);
         stage.show();
         

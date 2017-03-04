@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  *
- * @author dale
+ * @author dale/mike msr5zb 12358133
  * https://docs.oracle.com/javase/tutorial/networking/urls/creatingUrls.html
  */
 public class NYTNewsManager {
@@ -31,13 +31,10 @@ public class NYTNewsManager {
     // NOTE!!  The api key below is Dale Musser's api key.  If you build an app that uses the New York Times API
     // get your own api key!!!!!  Get it from: http://developer.nytimes.com
     // I also cannot guarantee that the api key provided will be valid in the future.
-    //http://developer.nytimes.com/proxy/https/api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=810a7f74e1e244d2a67a7c5ab7d5e7ca&query=Mike
-    //private final String baseUrlString = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
     private final String baseUrlString = "http://api.nytimes.com/svc/movies/v2/reviews/search.json";
-    //http://api.nytimes.com/svc/movies/v2/reviews/search.json?api-key=810a7f74e1e244d2a67a7c5ab7d5e7ca&query=Mike
     
     private final String apiKey = "810a7f74e1e244d2a67a7c5ab7d5e7ca";
-    private String searchString = "Mike";
+    private String searchString = "Space";
     
     private URL url;
     private ArrayList<NYTNewsStory> newsStories;
@@ -140,11 +137,17 @@ public class NYTNewsManager {
                 String headline = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("headline", ""));
                 String displayTitle = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("display_title", ""));
                 String mpaaRating = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("mpaa_rating", ""));
+                if(mpaaRating == null || mpaaRating.equals("")){mpaaRating = "No Rating Available";}
                 String byline = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("byline", ""));
+                if(byline == null){byline = "N/A";}
                 String openingDate = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("opening_date", ""));
+                if(openingDate == null){openingDate = "N/A";}
                 String publicationDate = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("publication_date", ""));
+                if(publicationDate == null){publicationDate = "N/A";}
                 String dateUpdated = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("date_updated", ""));
+                if(dateUpdated == null){dateUpdated = "N/A";}
                 String summaryShort = StringEscapeUtils.unescapeHtml4((String)story.getOrDefault("summary_short", ""));
+                if(summaryShort == null){summaryShort = "Summary Not Available.";}
                 
                 
             

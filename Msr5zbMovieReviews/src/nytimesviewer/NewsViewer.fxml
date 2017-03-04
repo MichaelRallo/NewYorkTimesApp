@@ -89,7 +89,7 @@
       </FlowPane>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <TextArea fx:id="movieDescription" prefHeight="100.0" prefWidth="800.0" HBox.hgrow="ALWAYS" />
+            <TextArea fx:id="movieDescription" prefHeight="100.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>
